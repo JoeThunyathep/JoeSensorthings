@@ -1,0 +1,14 @@
+[
+    {
+        "name": "HFT Room",
+        "description": "Participants in iCity Project (HFT Stuttgart)",
+        "encodingType": "application/vnd.geo+json",
+        "feature": {
+            "type": "Point",
+            "coordinates": [
+                9.173552,
+                48.779918
+            ]
+        }
+    }
+]

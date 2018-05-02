@@ -1,0 +1,9 @@
+{
+    "name": "HFT Stuttgart",
+    "description": "UNIVERSITY OF APPLIED SCIENCES STUTTGART, GERMANY (Starting Point)",
+    "encodingType": "application/vnd.geo+json",
+    "location": {
+      "type": "Point",
+      "coordinates": [9.1726, 48.7803, 100]
+    }
+  }

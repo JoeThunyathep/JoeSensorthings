@@ -1,0 +1,9 @@
+*.tgz
+*.txt
+build.xml
+examples.js
+Gruntfile.js
+
+src/
+test/
+test-src/
