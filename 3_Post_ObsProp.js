@@ -1,12 +1,13 @@
     // =========================== Required and fixed Input ===========================
     var jsonfile = require('jsonfile');
     var request = require('request');
-    const SENSOR_API_BASE_URL = 'http://localhost:8080/SensorThingsService/v1.0';
+    // const SENSOR_API_BASE_URL = 'http://localhost:8080/SensorThingsService/v1.0';
+    const SENSOR_API_BASE_URL = 'http://localhost:8080/STA_Test_Rossani/v1.0';  
     // =========================== Input setup ===========================
     //URL Path    
     const SENSOR_API_FINAL_URL = '/ObservedProperties';
     //File Path
-    var file = 'Data/STA_initialData/ObservedProperty_OWDAdd.json'; //Local input file
+    var file = 'Data/STA_initialData_HFT_Sensor/ObservedProperties.json'; //Local input file
     var object;
     // ===================================================================
     function Post_Sensor() {
