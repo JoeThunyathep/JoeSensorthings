@@ -5,9 +5,9 @@
     const SENSOR_API_BASE_URL = 'http://localhost:8080/STA_Test_Rossani/v1.0';  
     // =========================== Input setup ===========================
     //URL Path    
-    const SENSOR_API_FINAL_URL = '/Sensors';
+    const SENSOR_API_FINAL_URL = '/FeaturesOfInterest';
     //File Path
-    var file = 'Data/STA_initialData_HFT_Sensor/Sensors.json'; //Local input file
+    var file = 'Data/STA_initialData_HFT_Sensor/FOI.json'; //Local input file
     var object;
     // ===================================================================
     function Post_Sensor() {
