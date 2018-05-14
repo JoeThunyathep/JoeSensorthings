@@ -13,7 +13,7 @@ var DataStreamID, outTemp;
 var st_id;                  //IoT id of the Sensors and Things
 var dataStr_id;             //IoT id of the observed properties
 var execute = true;         //Default at false to show the result in terminal first (not POST yet)
-var startLine = 4;  //first line
+var startLine = 1;  //first line
 //var maxLineTCX = 975;    //all = out.length
 
 //* Function "generateRequestfromJSON" make a POST request to the STA
@@ -29,8 +29,8 @@ function generateRequestCSV(num) {
                 setTimeout(function cb() {
                     // TCX (More detailed and more rows than GPX)
                     var dataStreamAussentemp = {
-                        "phenomenonTime": (new Date(out[i][0])).toISOString(),
-                        "resultTime": (new Date(out[i][0])).toISOString(),
+                        "phenomenonTime": out[i][2],
+                        "resultTime": out[i][2],
                         "result": out[i][1],
                         "Datastream": { "@iot.id": 1 }
                     }

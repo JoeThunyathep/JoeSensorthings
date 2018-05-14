@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>STA Demo</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <link href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <script src="./code/highcharts.js"></script>
+    <script src="./code/modules/series-label.js"></script>
+    <script src="./code/modules/exporting.js"></script>
+    <script src="./code/js/themes/dark-unica.js"></script>
+</head>
+
+<body>
+    <div class="backdrop" id="HightChartContainer" draggable="true">
+        Chart Area
+    </div>
+    <script>
+        // fuction to check size of the array
+        Object.size = function (obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
+        //get Fuel Level Chart for 22/11/2017
+        var Base = "http://localhost:8080/STA_Test_Rossani/v1.0/Datastreams(";
+        var datasize, resultJson, matrix;
+        
+        var GenSerieData = function (dayFr,dayTo, month) {
+            var text = ")/Observations?$orderby=resultTime&$filter=day(resultTime)%20ge%20" + dayFr + "%20and%20day(resultTime)%20le%20" + dayTo+"%20and%20month(resultTime)%20eq%20" + month + "&$select=result,resultTime"
+            var FullRequestText = Base + 1 + text
+            var resultJs = getJSONRequestSTA(FullRequestText);
+            return resultJs;
+        }
+        var getJSONRequestSTA = function (FullRequestText) {
+            resultJson = [];
+            matrix = [];
+            $.getJSON(FullRequestText, function (data) {
+                datasize = Object.size(data.value);
+                for (let i = 0; i < datasize /*size of the jsonBody*/; i++) {
+                    var temp = [Date.parse(data.value[i].resultTime), Math.round(parseFloat(data.value[i].result) * 100) / 100];
+                    resultJson.push(temp); //input the resultTime in Unix
+                    matrix.push(temp[1]);
+                }
+            });
+            return [resultJson, matrix]
+        }
+        
+        
+
+
+        var drawChart = function (Data_Main) {
+            //setTimeout(function cb() {
+            //var nameTag = 'E-bike ' + ebikeID;
+            var nameTag = '';
+            Highcharts.chart('HightChartContainer', {
+                chart: {
+                    zoomType: 'x'
+                }, title: {
+                    text: 'STA Test'
+                },
+                subtitle: {
+                    text: 'TEST'
+                },
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: { // don't display the dummy year    
+                        minute: '%H:%M',
+                        hour: '%H:%M'
+                    },
+                    title: {
+                        text: 'Time'
+                    }
+                },
+                yAxis: [{
+                    title: {
+                        text: 'Temperature'
+                    },
+                    labels: {
+                        format: '{value} '
+                    }
+                }],
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.y:.2f} ' + ' at {point.x:%H:%M:%S.%L}',
+                    crosshairs: true,
+                    shared: true
+                    //valueSuffix: ' {series.su}'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true,
+                            radius: 2
+                        },
+                        series: {
+                            lineWidth: 1
+                        }
+                    }
+                },
+
+                series: [{
+                    name: 'Test Data',
+                    yAxis: 0,
+                    type: 'spline',
+                    // Define the data points. All series have a dummy year
+                    // of 1970/71 in order to be compared on the same x axis. Note
+                    // that in JavaScript, months start at 0 for January, 1 for February etc.
+                    data: Data_Main
+                }
+                ]
+
+
+            });
+            //}, 2000);
+        }
+        var requestedData = GenSerieData(5,7,1);
+        setTimeout(function cb() {
+            drawChart(requestedData[0]);
+        }, 500);
+    </script>
+</body>
+
+</html>
