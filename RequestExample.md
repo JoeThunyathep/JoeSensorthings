@@ -1,9 +1,11 @@
 # Request Example
 ## Request for the specific time 
 ### Request for Specific Hour (Everyday, Time: 1:00 - 9:00 )
-
+> All values
 http://localhost:8080/STA_Test_Rossani/v1.0/Datastreams(1)/Observations?$filter=hour(phenomenonTime)%20ge%202%20and%20hour(phenomenonTime)%20le%2010
 
+> Only the highest value
+http://localhost:8080/STA_Test_Rossani/v1.0/Datastreams(1)/Observations?$filter=hour(phenomenonTime)%20ge%202%20and%20hour(phenomenonTime)%20le%2010&$orderby=result%20desc&$top=1
 
 ### Request for Specific Date (17 January, Time: 11:00 - 18:00) and ordered by result value 
 > Only the highest value

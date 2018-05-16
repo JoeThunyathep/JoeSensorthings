@@ -1,3 +1,7 @@
+// Memo
+// Joe-PC : CSV AulaBua1_2016 posted [All]
+// Joe-Mac : CSV AulaBau1_2016 posted [1-1000]
+
 // =========================== Required and fixed Input ===========================
 const fs = require('fs');
 var _ = require('lodash');
@@ -7,14 +11,14 @@ const SENSOR_API_FINAL_URL = '/Observations';
 // Require
 var parse = require('csv-parse');
 //-----------------------------------------Set up-----------------------------------------
-var inputCSV = './Data/STA_Data_Rossany/AulaBua1_2016.csv';
+var inputCSV = './Data/STA_Data_Rossany/AulaBua1_2016.csv'; // Put CSV file path here
 var DataStreamID, outTemp;
 //* variable for STA service
 var st_id;                  //IoT id of the Sensors and Things
 var dataStr_id;             //IoT id of the observed properties
 var execute = true;         //Default at false to show the result in terminal first (not POST yet)
 var startLine = 1;  //first line
-//var maxLineTCX = 975;    //all = out.length
+var maxLineTCX = 1000;    //all = out.length
 
 //* Function "generateRequestfromJSON" make a POST request to the STA
 //* Depended on the incoming log file
@@ -25,7 +29,7 @@ function generateRequestCSV(num) {
         outTemp = out;
         parse(outTemp, { comment: '#' }, function (err, out) {
             //TCX loop
-            for (let i = startLine; i <= out.length-1 /* out.length-1maxLineTCX*/; i++) {
+            for (let i = startLine; i <= maxLineTCX /* out.length-1 or maxLineTCX*/; i++) {
                 setTimeout(function cb() {
                     // TCX (More detailed and more rows than GPX)
                     var dataStreamAussentemp = {
@@ -40,7 +44,7 @@ function generateRequestCSV(num) {
                         console.log(`dataStreamAussentemp [${i}] :` + JSON.stringify(dataStreamAussentemp));
                         console.log('---------------------------------------------------lenght:')
                     }
-                }, 300 * (i - 0));
+                }, 150 * (i - 0));
             }
         });
     });
