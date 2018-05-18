@@ -16,6 +16,15 @@ var GenSerieData = function (dayFr, dayTo, month) {
     var resultJs = getJSONRequestSTA(FullRequestText);
     return resultJs;
 }
+
+// GenSeieHighestDaily not done yet
+var GenSerieHighestDaily = function (dayFr, dayTo, month) {
+    var text = ")/Observations?$orderby=resultTime&$filter=month(resultTime)%20eq%20" + month + "&$select=result,resultTime"
+    var FullRequestText = Base + 1 + text
+    var resultJs = getJSONRequestSTA(FullRequestText);
+    return resultJs;
+}
+
 var getJSONRequestSTA = function (FullRequestText) {
     resultJson = [];
     matrix = [];
@@ -27,25 +36,26 @@ var getJSONRequestSTA = function (FullRequestText) {
             matrix.push(temp[1]);
         }
     });
-    console.log("Processing request from SensorThings API (URL : " + FullRequestText + " )");
+    console.log("Processing request from SensorThings API ...\n (URL : " + FullRequestText + " )");
     return [resultJson, matrix]
 }
 
 
 
 
-var drawChart = function (Data_Main) {
+var drawChart = function (Data_Main, dateValue, monthValue, yearValue) {
     //setTimeout(function cb() {
     //var nameTag = 'E-bike ' + ebikeID;
+    console.log("Drawing Graph using Highchart.js ...");
     var nameTag = '';
     Highcharts.chart('HightChartContainer', {
         chart: {
             zoomType: 'x'
         }, title: {
-            text: 'STA Test'
+            text: 'Temperature (Outside), @Aula, HFT'
         },
         subtitle: {
-            text: 'TEST'
+            text: 'Date :' + dateValue +'.'+ monthValue + '.' + yearValue
         },
         credits: {
             enabled: false
@@ -88,7 +98,7 @@ var drawChart = function (Data_Main) {
         },
 
         series: [{
-            name: 'Test Data',
+            name: 'Data on ' + dateValue +'.'+ monthValue + '.' + yearValue,
             yAxis: 0,
             type: 'spline',
             // Define the data points. All series have a dummy year

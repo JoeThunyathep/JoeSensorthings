@@ -27,10 +27,11 @@
     <script src="./code/hc/modules/series-label.js"></script>
     <script src="./code/hc/modules/exporting.js"></script>
     <script src="./code/hc/js/themes/dark-unica.js"></script>
+    <script src="./code/jstat.min.js"></script>
 </head>
 
 <body>
-    <div> Draw Chart of the selected date </div>
+    <div> Select the STA-Datastream </div>
     <div class="nowrap" id="CesiumStyleChoice">
         <select id="Datastream Selection">
             <option value="op1"> Out-Temperature Aula </option>
@@ -39,10 +40,12 @@
         </select>
     </div>
     <div class="nowrap" id="SelectDate">
+Select the Date
         <br>
         <input type="text" id="dateSelector" style='width:80px'>
         <br>
         <button id="submitDate">Confirm</button>
+        <button id="submitMonthly">Monthly - Summary</button>
     </div>
 
     <div class="backdrop" id="HightChartContainer" draggable="true">
@@ -63,6 +66,7 @@
             $("#dateSelector").datepicker("option", "showAnim", "slideDown");
             //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
             $("#dateSelector").datepicker().datepicker("setDate", new Date('2015-12-1'));
+            
             //jquery for Time selector from ...
             $("#submitDate").click(function () {
                 dateSelected = $("#dateSelector").val();
@@ -72,6 +76,25 @@
                     selectedYearStr = dateSelected.split("-")[0] * 1;
                     selectedMonthStr = dateSelected.split("-")[1] * 1;
                     selectedDateStr = dateSelected.split("-")[2] * 1;
+                    // Request for the data from STA server
+                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr+1, selectedMonthStr);
+                    // GenSerieData (Date From, Date To, Month)
+                    setTimeout(function cb() {
+                        drawChart(requestedData[0], selectedDateStr,selectedMonthStr, selectedYearStr);
+                    }, 500);
+                    // Timeout is needed to wait for the font of
+                }
+            });
+            // not done yet!!!!
+            $("#submitMonthly").click(function () {
+                dateSelected = $("#dateSelector").val();
+                if (dateSelected === "") {
+                    alert("Please select date.");
+                } else {
+                    selectedYearStr = dateSelected.split("-")[0] * 1;
+                    selectedMonthStr = dateSelected.split("-")[1] * 1;
+                    selectedDateStr = dateSelected.split("-")[2] * 1;
+                    // Request for the data from STA server
                     var requestedData = GenSerieData(selectedDateStr, selectedDateStr+1, selectedMonthStr);
                     // GenSerieData (Date From, Date To, Month)
                     setTimeout(function cb() {
