@@ -40,12 +40,18 @@
         </select>
     </div>
     <div class="nowrap" id="SelectDate">
-Select the Date
+        Select the Date
         <br>
         <input type="text" id="dateSelector" style='width:80px'>
         <br>
         <button id="submitDate">Confirm</button>
-        <button id="submitMonthly">Monthly - Summary</button>
+        <button id="submitAggregation">Aggregation Processing</button>
+    </div>
+    <div class="nowrap" id="aggregationOut">
+        Mean : 
+        <span id="Mean_Val"></span><br>
+        SD :
+        <span id="SD_Val"></span>
     </div>
 
     <div class="backdrop" id="HightChartContainer" draggable="true">
@@ -66,8 +72,9 @@ Select the Date
             $("#dateSelector").datepicker("option", "showAnim", "slideDown");
             //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
             $("#dateSelector").datepicker().datepicker("setDate", new Date('2015-12-1'));
-            
+
             //jquery for Time selector from ...
+            //Add From - To Time for drawing Highchart
             $("#submitDate").click(function () {
                 dateSelected = $("#dateSelector").val();
                 if (dateSelected === "") {
@@ -77,16 +84,16 @@ Select the Date
                     selectedMonthStr = dateSelected.split("-")[1] * 1;
                     selectedDateStr = dateSelected.split("-")[2] * 1;
                     // Request for the data from STA server
-                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr+1, selectedMonthStr);
+                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr + 1, selectedMonthStr);
                     // GenSerieData (Date From, Date To, Month)
                     setTimeout(function cb() {
-                        drawChart(requestedData[0], selectedDateStr,selectedMonthStr, selectedYearStr);
+                        drawChart(requestedData[0], selectedDateStr, selectedMonthStr, selectedYearStr);
                     }, 500);
                     // Timeout is needed to wait for the font of
                 }
             });
             // not done yet!!!!
-            $("#submitMonthly").click(function () {
+            $("#submitAggregation").click(function () {
                 dateSelected = $("#dateSelector").val();
                 if (dateSelected === "") {
                     alert("Please select date.");
@@ -95,10 +102,12 @@ Select the Date
                     selectedMonthStr = dateSelected.split("-")[1] * 1;
                     selectedDateStr = dateSelected.split("-")[2] * 1;
                     // Request for the data from STA server
-                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr+1, selectedMonthStr);
+                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr + 1, selectedMonthStr);
                     // GenSerieData (Date From, Date To, Month)
                     setTimeout(function cb() {
-                        drawChart(requestedData[0]);
+                        console.log("Processing Aggregation using JStat.js ...");
+                        document.getElementById('Mean_Val').innerHTML = jStat.mean(requestedData[1]).toFixed(3) + " Celsius";
+                        document.getElementById('SD_Val').innerHTML = jStat.stdev(requestedData[1]).toFixed(3) + " Celsius";
                     }, 500);
                     // Timeout is needed to wait for the font of
                 }

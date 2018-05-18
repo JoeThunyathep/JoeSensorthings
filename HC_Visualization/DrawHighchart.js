@@ -68,6 +68,9 @@ var drawChart = function (Data_Main, dateValue, monthValue, yearValue) {
             },
             title: {
                 text: 'Time'
+            },
+            labels: {
+                step: 1
             }
         },
         yAxis: [{
