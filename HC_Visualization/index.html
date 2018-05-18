@@ -40,9 +40,10 @@
         </select>
     </div>
     <div class="nowrap" id="SelectDate">
-        Select the Date
+        Select the Date (From - To)
         <br>
         <input type="text" id="dateSelector" style='width:80px'>
+        <input type="text" id="dateSelectorTo" style='width:80px'>
         <br>
         <button id="submitDate">Confirm</button>
         <button id="submitAggregation">Aggregation Processing</button>
@@ -59,9 +60,17 @@
 
     <script>
         var dateSelected, selectedYearStr, selectedMonthStr, selectedDateStr;
+        var dateSelectedTo, selectedYearStrTo, selectedMonthStrTo, selectedDateStrTo;
         $(document).ready(function () {
             //var Defdate = new Date('2017-11-22');
             $("#dateSelector").datepicker({
+                minDate: new Date(2015, 12, 1),
+                maxDate: "+12D",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '2016:2017',
+            });
+            $("#dateSelectorTo").datepicker({
                 minDate: new Date(2015, 12, 1),
                 maxDate: "+12D",
                 changeMonth: true,
@@ -72,19 +81,30 @@
             $("#dateSelector").datepicker("option", "showAnim", "slideDown");
             //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
             $("#dateSelector").datepicker().datepicker("setDate", new Date('2015-12-1'));
+            $("#dateSelectorTo").datepicker("option", "dateFormat", "yy-mm-dd");
+            $("#dateSelectorTo").datepicker("option", "showAnim", "slideDown");
+            //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
+            $("#dateSelectorTo").datepicker().datepicker("setDate", new Date('2015-12-1'));
 
             //jquery for Time selector from ...
             //Add From - To Time for drawing Highchart
             $("#submitDate").click(function () {
                 dateSelected = $("#dateSelector").val();
+                dateSelectedTo = $("#dateSelectorTo").val();
+                var date_isoFr = dateSelected + "T02:00:00.000Z";
+                var date_isoTo = dateSelectedTo + "T02:00:00.000Z";
                 if (dateSelected === "") {
                     alert("Please select date.");
                 } else {
                     selectedYearStr = dateSelected.split("-")[0] * 1;
                     selectedMonthStr = dateSelected.split("-")[1] * 1;
                     selectedDateStr = dateSelected.split("-")[2] * 1;
+                    selectedYearStrTo = dateSelectedTo.split("-")[0] * 1;
+                    selectedMonthStrTo = dateSelectedTo.split("-")[1] * 1;
+                    selectedDateStrTo = dateSelectedTo.split("-")[2] * 1;
                     // Request for the data from STA server
-                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr + 1, selectedMonthStr);
+                    var requestedData = GenSerieData(selectedDateStr, selectedDateStrTo, selectedMonthStr,selectedMonthStrTo);
+                    // var requestedDataN = GenSerieDataN(date_isoFr, date_isoTo);
                     // GenSerieData (Date From, Date To, Month)
                     setTimeout(function cb() {
                         drawChart(requestedData[0], selectedDateStr, selectedMonthStr, selectedYearStr);
@@ -95,6 +115,9 @@
             // not done yet!!!!
             $("#submitAggregation").click(function () {
                 dateSelected = $("#dateSelector").val();
+                dateSelectedTo = $("#dateSelectorTo").val();
+                var date_isoFr = dateSelected + "T01:00:00.000Z";
+                var date_isoTo = dateSelectedTo + "T01:00:00.000Z";
                 if (dateSelected === "") {
                     alert("Please select date.");
                 } else {
@@ -102,7 +125,8 @@
                     selectedMonthStr = dateSelected.split("-")[1] * 1;
                     selectedDateStr = dateSelected.split("-")[2] * 1;
                     // Request for the data from STA server
-                    var requestedData = GenSerieData(selectedDateStr, selectedDateStr + 1, selectedMonthStr);
+                    var requestedData = GenSerieData(selectedDateStr, selectedDateStrTo, selectedMonthStr,selectedMonthStrTo);
+                    //var requestedDataN = GenSerieDataN(date_isoFr, date_isoTo);
                     // GenSerieData (Date From, Date To, Month)
                     setTimeout(function cb() {
                         console.log("Processing Aggregation using JStat.js ...");

@@ -10,21 +10,20 @@ Object.size = function (obj) {
 var Base = "http://localhost:8080/STA_Test_Rossani/v1.0/Datastreams(";
 var datasize, resultJson, matrix;
 
-var GenSerieData = function (dayFr, dayTo, month) {
-    var text = ")/Observations?$orderby=resultTime&$filter=day(resultTime)%20ge%20" + dayFr + "%20and%20day(resultTime)%20le%20" + dayTo + "%20and%20month(resultTime)%20eq%20" + month + "&$select=result,resultTime"
+//Still not work well with different - month
+var GenSerieData = function (dayFr, dayTo, monthFr, monthTo) {
+    var text = ")/Observations?$orderby=resultTime&$filter=day(resultTime)%20ge%20" + dayFr + "%20and%20day(resultTime)%20le%20" + dayTo + "%20and%20month(resultTime)%20ge%20" + monthFr +"%20and%20month(resultTime)%20le%20" + monthTo+ "&$select=result,resultTime"
     var FullRequestText = Base + 1 + text
     var resultJs = getJSONRequestSTA(FullRequestText);
     return resultJs;
 }
-
-// GenSeieHighestDaily not done yet
-var GenSerieHighestDaily = function (dayFr, dayTo, month) {
-    var text = ")/Observations?$orderby=resultTime&$filter=month(resultTime)%20eq%20" + month + "&$select=result,resultTime"
+//Request with ISO still have a bug that the time period hh:mm:ss.ss is not working
+var GenSerieDataN = function (isoFr,isoTo) {
+    var text = ")/Observations?$orderby=resultTime&$filter=resultTime%20ge%20'" + isoFr + "'%20and%20resultTime%20le%20'" + isoTo + "'&$select=result,resultTime"
     var FullRequestText = Base + 1 + text
     var resultJs = getJSONRequestSTA(FullRequestText);
     return resultJs;
 }
-
 var getJSONRequestSTA = function (FullRequestText) {
     resultJson = [];
     matrix = [];
