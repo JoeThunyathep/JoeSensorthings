@@ -35,18 +35,19 @@
 </head>
 
 <body>
+    <h1>SensorThings API - HFT Demo</h1>
     <div>
-        <strong>Select the STA-Datastream</strong>
+        <strong>Select the Datastream</strong>
     </div>
     <div class="nowrap" id="CesiumStyleChoice">
         <select id="Datastream Selection">
-            <option value="op1"> Out-Temperature Aula </option>
+            <option value="op1"> Out-Temperature Aula (Datastream ID: 1) </option>
             <option value="op2"> option 2 </option>
             <option value="op3"> option 3 </option>
         </select>
     </div>
     <div class="nowrap" id="SelectDate">
-        <strong>the Date (From - To)</strong>
+        <strong>Select the Date (From - To)</strong>
         <br>
         <input type="text" id="dateSelector" style='width:80px'>
         <input type="text" id="dateSelectorTo" style='width:80px'>
@@ -55,6 +56,7 @@
         <button id="submitAggregation">Aggregation Processing</button>
         <button id="drawTable">Draw Table</button>
         <button id="clearDataTable">Clear Table</button>
+        <br> Remark: This app-version limits at 100 datastreams or around 4 days)
     </div>
     <div class="backdrop" id="HightChartContainer" draggable="true"> [Chart output here ...]
     </div>
@@ -62,21 +64,24 @@
         <span>
             <strong>Aggregation Output</strong>
         </span>
+        <br> Min :
+        <span id="Min_Val"></span>
+        <br> Max :
+        <span id="Max_Val"></span>
+        <br> Sum :
+        <span id="Sum_Val"></span>
         <br> Mean :
         <span id="Mean_Val"></span>
         <br> SD :
         <span id="SD_Val"></span>
     </div>
     <div>
-        <table id="example" class="display" width="100%"></table>
+        <table id="tableArea" class="display" width="100%"></table>
     </div>
     <script>
         var dateSelected, selectedYearStr, selectedMonthStr, selectedDateStr;
         var dateSelectedTo, selectedYearStrTo, selectedMonthStrTo, selectedDateStrTo;
         var ds_id;
-        var dataSetTable = [
-            ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800"],
-            ["Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750"]];
         $(document).ready(function () {
             //var Defdate = new Date('2017-11-22');
             $("#dateSelector").datepicker({
@@ -95,23 +100,14 @@
             });
             $("#dateSelector").datepicker("option", "dateFormat", "yy-mm-dd");
             $("#dateSelector").datepicker("option", "showAnim", "slideDown");
-            //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
             $("#dateSelector").datepicker().datepicker("setDate", new Date('2015-12-1'));
             $("#dateSelectorTo").datepicker("option", "dateFormat", "yy-mm-dd");
             $("#dateSelectorTo").datepicker("option", "showAnim", "slideDown");
-            //$("#dateSelector").datepicker({ minDate: 0, maxDate: "+12D" });
             $("#dateSelectorTo").datepicker().datepicker("setDate", new Date('2015-12-2'));
 
-            
-            $("#clearDataTable").click(function () {
-                var table = $('#example').DataTable();
-                table
-                .clear()
-                .destroy();
-                //document.getElementById("example").outerHTML = "";
-            });
 
-//jquery for Time selector from ...
+
+            //jquery for Time selector from ...
             //Add From - To Time for drawing Highchart
             $("#submitDate").click(function () {
                 // read variable from the user - selected value
@@ -142,7 +138,7 @@
                 }
             });
             $("#drawTable").click(function () {
-                $('#example').DataTable({
+                $('#tableArea').DataTable({
                     data: resultRaw,
                     columns: [
                         { title: "Time-ISO" },
@@ -150,8 +146,15 @@
                     ]
                 });
             });
-
-            // not done yet!!!!
+            //Set button function to clear the table
+            $("#clearDataTable").click(function () {
+                var table = $('#tableArea').DataTable();
+                table
+                    .clear()
+                    .destroy();
+                //document.getElementById("tableArea").outerHTML = "";
+            });
+            // Aggregation function!
             $("#submitAggregation").click(function () {
                 dateSelected = $("#dateSelector").val();
                 dateSelectedTo = $("#dateSelectorTo").val();
@@ -172,6 +175,9 @@
                         console.log("Processing Aggregation using JStat.js ...");
                         document.getElementById('Mean_Val').innerHTML = jStat.mean(requestedData[1]).toFixed(3) + " Celsius";
                         document.getElementById('SD_Val').innerHTML = jStat.stdev(requestedData[1]).toFixed(3) + " Celsius";
+                        document.getElementById('Min_Val').innerHTML = jStat.min(requestedData[1]).toFixed(3) + " Celsius";
+                        document.getElementById('Max_Val').innerHTML = jStat.max(requestedData[1]).toFixed(3) + " Celsius";
+                        document.getElementById('Sum_Val').innerHTML = jStat.sum(requestedData[1]).toFixed(3) + " Celsius";
                     }, 500);
                     // Timeout is needed to wait for the font of
                 }
