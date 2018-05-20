@@ -56,7 +56,7 @@ var drawChart = function (Data_Main, isoFr, isoTo, DS) {
             text: 'Temperature (Outside), @Aula, HFT'
         },
         subtitle: {
-            text: 'From :' + isoFr + '>> to :' + isoTo 
+            text: 'Datastream id: '+DS+' [' + isoFr + '] - [' + isoTo +']'
         },
         credits: {
             enabled: false
@@ -66,7 +66,7 @@ var drawChart = function (Data_Main, isoFr, isoTo, DS) {
             dateTimeLabelFormats: { // don't display the dummy year    
             day : '%e %b',    
             minute: '%H:%M',
-                hour: '%e %b \ %H:%M'
+                hour: '%e %b \ %H:%M:%S'
             },
             title: {
                 text: 'Time'

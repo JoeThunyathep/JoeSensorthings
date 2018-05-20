@@ -7,7 +7,7 @@
     //URL Path    
     const SENSOR_API_FINAL_URL = '/Sensors';
     //File Path
-    var file = 'Data/STA_initialData_HFT_Sensor/Sensors.json'; //Local input file
+    var file = 'Data/STA_initialData_HFT_Sensor/Sensors_n.json'; //Local input file ("_n" means the latest updated sensor)
     var object;
     // ===================================================================
     function Post_Sensor() {

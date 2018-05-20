@@ -1,11 +1,5 @@
 [
   {
-    "name": "01'HZ00'V100_Aussentemp.",
-    "description": "01'HZ00'V100_Aussentemp.",
-    "encodingType": "application/pdf",
-    "metadata": "http://www.hft-stuttgart.de/Einrichtungen/Bibliothek/index.html/en"
-  },
-  {
     "name": "01'Rl02'M101_Sollwert_Raumtemp",
     "description": "01'Rl02'M101_Sollwert_Raumtemp",
     "encodingType": "application/pdf",

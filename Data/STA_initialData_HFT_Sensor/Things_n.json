@@ -1,12 +1,5 @@
 [
 {
-    "name": "01'HZ00'V100_Aussentemp.",
-    "description": "Aussentemp-Sensor in HFT",
-    "properties": {
-        "Address": "VIS:$016'VIP31"
-    }
-},
-{
     "name": "01'Rl02'M101_Sollwert_Raumtemp",
     "description": "Sollwert_Raumtemp",
     "properties": {

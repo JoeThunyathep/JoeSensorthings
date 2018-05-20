@@ -1,6 +1,7 @@
 // Memo
 // Joe-PC : CSV AulaBua1_2016 posted [All]
-// Joe-Mac : CSV AulaBau1_2016 posted [1-1000]
+// Joe-Mac : CSV AulaBau1_2016 DS-1 AussenTemp posted [1-1000]
+// Joe-Mac : CSV AulaBau1_2016 DS-2 AussenTemp posted [Not yet]
 
 // =========================== Required and fixed Input ===========================
 const fs = require('fs');
@@ -33,9 +34,9 @@ function generateRequestCSV(num) {
                 setTimeout(function cb() {
                     // TCX (More detailed and more rows than GPX)
                     var dataStreamAussentemp = {
-                        "phenomenonTime": out[i][2],
-                        "resultTime": out[i][2],
-                        "result": out[i][1],
+                        "phenomenonTime": out[i][1],
+                        "resultTime": out[i][1],
+                        "result": out[i][2],
                         "Datastream": { "@iot.id": 1 }
                     }
                     if (execute) {

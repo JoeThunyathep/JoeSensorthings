@@ -7,8 +7,10 @@
     const SENSOR_API_BASE_URL = 'http://localhost:8080/STA_Test_Rossani/v1.0';
 
     // Set variable depend on the object in SensorThings Service
-    var IdObsProp_First = 1; //28
-    var IdObsProp_Last  = 1; //34
+    var IdObsProp_First = 1; // min 1
+    var IdObsProp_Last  = 1; // max 1
+    var IdThings_First  = 2;  // min 1
+    var IdThings_Last   = 4;  // max 4
     // ============================ Define Variable =========================
     var datastreamBody = []; 
     var DS_Name;    var DS_Description; var DS_obType;
@@ -19,7 +21,8 @@
         //loop through all STA services
         //* o_id --> ObservedProperties
         //* st_id --> Things and Sensors ID
-        for (let o_id = IdObsProp_First; o_id <= IdObsProp_Last; o_id++) { /*Whole range 1 to 16*/
+        for (let o_id = IdObsProp_First; o_id <= IdObsProp_Last; o_id++) { 
+            for (let st_id = IdThings_First; st_id <= IdThings_Last; st_id++) {
                 // match the IoT id of <Things and Sensors>
                 if (o_id == 1) { 
                     CoreDS_Name     = "Temperature"
@@ -30,6 +33,7 @@
                     UoM_Definition  = "https://en.wikipedia.org/wiki/Celcius",
                     UoM_Symbol      = "C"    
                 }
+
                 //* Format the datastream JSON body
                 datastreamBody[count] = {
                     "name": DS_Name,
@@ -41,14 +45,14 @@
                       "definition": UoM_Definition
                     },
                     // "Thing":{"@iot.id":st_id},
-                    "Thing":{"@iot.id":1},
+                    "Thing":{"@iot.id":st_id},
                     "ObservedProperty":{"@iot.id":o_id},
-                    "Sensor":{"@iot.id":1}
+                    "Sensor":{"@iot.id":st_id}
                 };
                   //console.log(JSON.stringify(datastreamBody));  */ command to check the datastream body
                   //console.log(`Sending POST request of DataStream [ObsPropID: ${o_id}][ThingID:${st_id}][SensorID:${s_id}] `)
                   count++;
-        }
+        }}
         postSTA(datastreamBody,0); 
     }
     function postSTA(DS_Body, i) {
