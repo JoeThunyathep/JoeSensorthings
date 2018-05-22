@@ -8,8 +8,8 @@ const SENSOR_API_BASE_URL = 'http://localhost:8080/STA_Test_Rossani/v1.0';
 const SENSOR_API_FINAL_URL = '/Things';
 //File Path
 var file = 'Data/STA_initialData_HFT_Sensor/Location_HFT.json'; //Local input file
-var i = 2; //start Thing ID 1
-var j = 4; //stop Thing ID 6
+var i = 2; //start Thing ID
+var j = 4; //stop Thing ID
 // ===================================================================
 function Post_Location() {
     jsonfile.readFile(file, function (err, obj) {

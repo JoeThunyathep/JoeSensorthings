@@ -1,7 +1,9 @@
-// Memo
+   // Memo
 // Joe-PC : CSV AulaBua1_2016 posted [All]
 // Joe-Mac : CSV AulaBau1_2016 DS-1 AussenTemp posted [1-1000]
-// Joe-Mac : CSV AulaBau1_2016 DS-2 AussenTemp posted [Not yet]
+// Joe-Mac : CSV AulaBau1_2016 DS-2 AussenTemp posted [1-1000]
+// Joe-Mac : CSV AulaBau1_2016 DS-3 AussenTemp posted [1-1000]
+// Joe-Mac : CSV AulaBau1_2016 DS-4 AussenTemp posted [1-1000]
 
 // =========================== Required and fixed Input ===========================
 const fs = require('fs');
@@ -18,6 +20,7 @@ var DataStreamID, outTemp;
 var st_id;                  //IoT id of the Sensors and Things
 var dataStr_id;             //IoT id of the observed properties
 var execute = true;         //Default at false to show the result in terminal first (not POST yet)
+//var execute1 = false;       //Column 2-4
 var startLine = 1;  //first line
 var maxLineTCX = 1000;    //all = out.length
 
@@ -29,23 +32,48 @@ function generateRequestCSV(num) {
         if (err) throw err;
         outTemp = out;
         parse(outTemp, { comment: '#' }, function (err, out) {
-            //TCX loop
+            //Set double "for" loop to automatically "POST" the whole CSV file
             for (let i = startLine; i <= maxLineTCX /* out.length-1 or maxLineTCX*/; i++) {
                 setTimeout(function cb() {
                     // TCX (More detailed and more rows than GPX)
                     var dataStreamAussentemp = {
-                        "phenomenonTime": out[i][1],
-                        "resultTime": out[i][1],
-                        "result": out[i][2],
+                        "phenomenonTime": out[i][0],
+                        "resultTime": out[i][0],
+                        "result": out[i][1],
                         "Datastream": { "@iot.id": 1 }
                     }
-                    if (execute) {
-                        postSTA(dataStreamAussentemp, i,'AussenTemp');
-                    } else {
-                        console.log(`dataStreamAussentemp [${i}] :` + JSON.stringify(dataStreamAussentemp));
-                        console.log('---------------------------------------------------lenght:')
+                    var dataStreamAulaTableau = {
+                        "phenomenonTime": out[i][0],
+                        "resultTime": out[i][0],
+                        "result": out[i][2],
+                        "Datastream": { "@iot.id": 2 }
                     }
-                }, 150 * (i - 0));
+                    var dataStreamAulaRTunten = {
+                        "phenomenonTime": out[i][0],
+                        "resultTime": out[i][0],
+                        "result": out[i][3],
+                        "Datastream": { "@iot.id": 3 }
+                    }
+                    var dataStreamAulaRToben = {
+                        "phenomenonTime": out[i][0],
+                        "resultTime": out[i][0],
+                        "result": out[i][4],
+                        "Datastream": { "@iot.id": 4 }
+                    }
+                    if (execute) {
+                        // Uncomment to Execute
+                        //postSTA(dataStreamAussentemp, i,'AussenTemp');   //DS:1
+                        //postSTA(dataStreamAulaTableau, i,'AulaTableau'); //DS:2
+                        //postSTA(dataStreamAulaRTunten, i,'AulaRTunten'); //DS:3
+                        //postSTA(dataStreamAulaRToben, i,'AulaRToben');   //DS:4
+                    } else {
+                        //console.log(`dataStreamAussentemp [${i}] :` + JSON.stringify(dataStreamAussentemp));
+                        //console.log(`dataStreamAulaTableau [${i}] :` + JSON.stringify(dataStreamAulaTableau));
+                        //console.log(`dataStreamAulaRTunten [${i}] :` + JSON.stringify(dataStreamAulaRTunten));
+                        //console.log(`dataStreamAulaRToben [${i}] :` + JSON.stringify(dataStreamAulaRToben));
+                        //console.log('---------------------------------------------------lenght:')
+                    }
+                }, 50 * (i - 0));
             }
         });
     });
